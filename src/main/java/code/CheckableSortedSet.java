@@ -1,4 +1,4 @@
-package org.example;
+package code;
 
 import java.util.SortedSet;
 

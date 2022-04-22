@@ -1,4 +1,4 @@
-package org.example;
+package code;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -288,7 +288,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         }
 
         //временные затраты: O(1)
-        //затраты памяти: O(1)
         @Override
         public T next() {
             if (stack.isEmpty())

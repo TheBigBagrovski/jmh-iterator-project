@@ -1,4 +1,4 @@
-package org.example
+package code
 
 import org.junit.Test
 import org.junit.jupiter.api.Tag
