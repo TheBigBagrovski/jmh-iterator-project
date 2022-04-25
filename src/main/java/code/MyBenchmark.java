@@ -30,82 +30,7 @@ public class MyBenchmark {
     @Fork(1)
     @BenchmarkMode(Mode.AverageTime)
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 5, time = 1)
-    @Measurement(iterations = 10, time = 1)
-    public void testCreateIterator(CreateIteratorState state) {
-        state.iterator = state.tree.iterator();
-    }
-
-    @State(Scope.Thread)
-    public static class CreateIteratorState {
-        public BinarySearchTree<Integer> tree = new BinarySearchTree<>(true);
-        public Iterator<Integer> iterator;
-        public List<Integer> list;
-
-        @Setup(Level.Invocation)
-        public void doSetup() {
-            list = currentList;
-            Collections.shuffle(list);
-            tree.addAll(list);
-        }
-    }
-
-    @Benchmark
-    @Fork(1)
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 5, time = 1)
-    @Measurement(iterations = 10, time = 1)
-    public void testGetFirst(GetFirstState state, Blackhole bh) {
-        bh.consume(state.iterator.next());
-    }
-
-    @State(Scope.Thread)
-    public static class GetFirstState {
-        public BinarySearchTree<Integer> tree = new BinarySearchTree<>(true);
-        public Iterator<Integer> iterator;
-        public List<Integer> list;
-
-        @Setup(Level.Invocation)
-        public void doSetup() {
-            list = currentList;
-            Collections.shuffle(list);
-            tree.addAll(list);
-            iterator = tree.iterator();
-        }
-    }
-
-    @Benchmark
-    @Fork(1)
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 5, time = 1)
-    @Measurement(iterations = 10, time = 1)
-    public void testGetMiddle(GetMiddleState state, Blackhole bh) {
-        bh.consume(state.iterator.next());
-    }
-
-    @State(Scope.Thread)
-    public static class GetMiddleState {
-        public BinarySearchTree<Integer> tree = new BinarySearchTree<>(true);
-        public Iterator<Integer> iterator;
-        public List<Integer> list;
-
-        @Setup(Level.Invocation)
-        public void doSetup() {
-            list = currentList;
-            Collections.shuffle(list);
-            tree.addAll(list);
-            iterator = tree.iterator();
-            for (int i = 0; i<list.size()/2;i++) iterator.next();
-        }
-    }
-
-    @Benchmark
-    @Fork(1)
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 5, time = 1)
+    @Warmup(iterations = 10, time = 1)
     @Measurement(iterations = 10, time = 1)
     public void testPassThroughFirst(GetPassThroughStateFirst state, Blackhole bh) {
         for (int i = 0; i < state.list.size(); i++) {
@@ -131,7 +56,7 @@ public class MyBenchmark {
     @Fork(1)
     @BenchmarkMode(Mode.AverageTime)
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 5, time = 1)
+    @Warmup(iterations = 10, time = 1)
     @Measurement(iterations = 10, time = 1)
     public void testPassThroughSecond(GetPassThroughStateSecond state, Blackhole bh) {
         for (int i = 0; i < state.list.size(); i++) {
@@ -152,4 +77,80 @@ public class MyBenchmark {
             iterator = tree.iterator();
         }
     }
+
+    @Benchmark
+    @Fork(1)
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    @Warmup(iterations = 10, time = 1)
+    @Measurement(iterations = 10, time = 1)
+    public void testGetFirst(GetFirstState state, Blackhole bh) {
+        bh.consume(state.iterator.next());
+    }
+
+    @State(Scope.Thread)
+    public static class GetFirstState {
+        public BinarySearchTree<Integer> tree = new BinarySearchTree<>(true);
+        public Iterator<Integer> iterator;
+        public List<Integer> list;
+
+        @Setup(Level.Invocation)
+        public void doSetup() {
+            list = currentList;
+            Collections.shuffle(list);
+            tree.addAll(list);
+            iterator = tree.iterator();
+        }
+    }
+
+    @Benchmark
+    @Fork(1)
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    @Warmup(iterations = 10, time = 1)
+    @Measurement(iterations = 10, time = 1)
+    public void testGetMiddle(GetMiddleState state, Blackhole bh) {
+        bh.consume(state.iterator.next());
+    }
+
+    @State(Scope.Thread)
+    public static class GetMiddleState {
+        public BinarySearchTree<Integer> tree = new BinarySearchTree<>(true);
+        public Iterator<Integer> iterator;
+        public List<Integer> list;
+
+        @Setup(Level.Invocation)
+        public void doSetup() {
+            list = currentList;
+            Collections.shuffle(list);
+            tree.addAll(list);
+            iterator = tree.iterator();
+            for (int i = 0; i<list.size()/2;i++) iterator.next();
+        }
+    }
+
+    @Benchmark
+    @Fork(1)
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    @Warmup(iterations = 10, time = 1)
+    @Measurement(iterations = 10, time = 1)
+    public void testCreateIterator(CreateIteratorState state) {
+        state.iterator = state.tree.iterator();
+    }
+
+    @State(Scope.Thread)
+    public static class CreateIteratorState {
+        public BinarySearchTree<Integer> tree = new BinarySearchTree<>(true);
+        public Iterator<Integer> iterator;
+        public List<Integer> list;
+
+        @Setup(Level.Invocation)
+        public void doSetup() {
+            list = currentList;
+            Collections.shuffle(list);
+            tree.addAll(list);
+        }
+    }
+
 }

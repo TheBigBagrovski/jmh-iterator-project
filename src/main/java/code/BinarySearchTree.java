@@ -284,8 +284,13 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         private final Stack<Node<T>> stack = new Stack<>();
 
         private BinarySearchTreeIteratorFirst() {
-            if (root != null) {
-                stack.push(root);
+            pushLeftBranch(root);
+        }
+
+        private void pushLeftBranch(Node<T> cur) {
+            if (cur != null) {
+                stack.push(cur);
+                pushLeftBranch(cur.left);
             }
         }
 
@@ -294,18 +299,27 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
             return !stack.isEmpty();
         }
 
-        //временные затраты: O(1)
         @Override
         public T next() {
             if (stack.isEmpty())
                 throw new NoSuchElementException();
             Node<T> current = stack.pop();
-            if (current.right != null)
-                stack.push(current.right);
-            if (current.left != null)
-                stack.push(current.left);
+            pushLeftBranch(current.right);
             return current.value;
         }
+
+
+//        @Override
+//        public T next() {
+//            if (stack.isEmpty())
+//                throw new NoSuchElementException();
+//            Node<T> current = stack.pop();
+//            if (current.right != null)
+//                stack.push(current.right);
+//            if (current.left != null)
+//                stack.push(current.left);
+//            return current.value;
+//        }
 
         @Override
         public void remove() {
@@ -338,15 +352,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
             else return node.parent;
         }
 
-        //временные затраты: O(1)
-        //затраты памяти: O(1)
         @Override
         public boolean hasNext() {
             return nodesPassed < initialSize;
         }
 
-        //временные затраты: O(1)
-        //затраты памяти: O(1)
         @Override
         public T next() {
             if (nodesPassed == initialSize || initialSize == 0) throw new NoSuchElementException();
