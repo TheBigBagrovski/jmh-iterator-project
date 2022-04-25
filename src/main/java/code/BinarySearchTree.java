@@ -10,9 +10,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
 
     private Node<T> root;
     private int size;
+    private boolean first;
 
-    public BinarySearchTree() {
+    public BinarySearchTree(boolean first) {
         this.root = null;
+        this.first = first;
         this.size = 0;
     }
 
@@ -257,6 +259,8 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         return right == null || right.value.compareTo(node.value) > 0 && checkInvariant(right);
     }
 
+
+
     private static class Node<T> {
         final T value;
         Node<T> parent = null;
@@ -271,7 +275,9 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return new BinarySearchTreeIteratorFirst();
+        if (first)
+            return new BinarySearchTreeIteratorFirst();
+        else return new BinarySearchTreeIteratorSecond();
     }
 
     public class BinarySearchTreeIteratorFirst implements Iterator<T> {
@@ -282,6 +288,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
                 stack.push(root);
             }
         }
+
         @Override
         public boolean hasNext() {
             return !stack.isEmpty();
