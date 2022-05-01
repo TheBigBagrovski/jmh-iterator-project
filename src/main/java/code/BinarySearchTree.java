@@ -259,7 +259,13 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         return right == null || right.value.compareTo(node.value) > 0 && checkInvariant(right);
     }
 
-
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        if (first)
+            return new BinarySearchTreeIteratorFirst();
+        else return new BinarySearchTreeIteratorSecond();
+    }
 
     private static class Node<T> {
         final T value;
@@ -272,16 +278,9 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         }
     }
 
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        if (first)
-            return new BinarySearchTreeIteratorFirst();
-        else return new BinarySearchTreeIteratorSecond();
-    }
-
     public class BinarySearchTreeIteratorFirst implements Iterator<T> {
-        private final Stack<Node<T>> stack = new Stack<>();
+        private final LinkedList<Node<T>> stack = new LinkedList<>();
+        Node<T> current;
 
         private BinarySearchTreeIteratorFirst() {
             pushLeftBranch(root);
@@ -303,7 +302,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         public T next() {
             if (stack.isEmpty())
                 throw new NoSuchElementException();
-            Node<T> current = stack.pop();
+            current = stack.pop();
             pushLeftBranch(current.right);
             return current.value;
         }
