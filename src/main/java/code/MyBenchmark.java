@@ -34,7 +34,7 @@ public class MyBenchmark {
     @Measurement(iterations = 10, time = 1)
     public void testPassThroughFirst(GetPassThroughStateFirst state, Blackhole bh) {
         for (int i = 0; i < state.list.size(); i++) {
-            bh.consume(state.tree.iterator().next());
+            bh.consume(state.iterator.next());
         }
     }
 
@@ -60,7 +60,7 @@ public class MyBenchmark {
     @Measurement(iterations = 10, time = 1)
     public void testPassThroughSecond(GetPassThroughStateSecond state, Blackhole bh) {
         for (int i = 0; i < state.list.size(); i++) {
-            bh.consume(state.tree.iterator().next());
+            bh.consume(state.iterator.next());
         }
     }
 
