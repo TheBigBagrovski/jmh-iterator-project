@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 // attention: Comparable is supported but Comparator is not
-public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> implements CheckableSortedSet<T> {
+public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> /*implements CheckableSortedSet<T>*/ {
 
     private Node<T> root;
     private int size;
@@ -18,7 +18,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         this.size = 0;
     }
 
-    @Override
+//    @Override
     public int size() {
         return size;
     }
@@ -41,7 +41,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         }
     }
 
-    @Override
+//    @Override
     public boolean contains(Object o) {
         @SuppressWarnings("unchecked")
         T t = (T) o;
@@ -59,7 +59,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      * <p>
      * Пример
      */
-    @Override
+//    @Override
     public boolean add(T t) {
         Node<T> closest = find(t);
         int comparison = closest == null ? -1 : t.compareTo(closest.value);
@@ -95,7 +95,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      */
     //временные затраты: O(N) (проходим по бинарному дереву, худший случай - вырожденное дерево)
     //затраты памяти: O(1) (пройденные узлы нигде не хранятся)
-    @Override
+//    @Override
     public boolean remove(Object o) {
         Node<T> current = root;
         @SuppressWarnings("unchecked")
@@ -148,7 +148,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
     }
 
     @Nullable
-    @Override
+//    @Override
     public Comparator<? super T> comparator() {
         return null;
     }
@@ -171,7 +171,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      * Очень сложная (в том случае, если спецификация реализуется в полном объёме)
      */
     @NotNull
-    @Override
+//    @Override
     public SortedSet<T> subSet(T fromElement, T toElement) {
         // TODO
         throw new IllegalStateException();
@@ -192,7 +192,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      * Сложная
      */
     @NotNull
-    @Override
+//    @Override
     public SortedSet<T> headSet(T toElement) {
         // TODO
         throw new IllegalStateException();
@@ -213,13 +213,13 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      * Сложная
      */
     @NotNull
-    @Override
+//    @Override
     public SortedSet<T> tailSet(T fromElement) {
         // TODO
         throw new IllegalStateException();
     }
 
-    @Override
+//    @Override
     public T first() {
         if (root == null) throw new NoSuchElementException();
         Node<T> current = root;
@@ -229,7 +229,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         return current.value;
     }
 
-    @Override
+//    @Override
     public T last() {
         if (root == null) throw new NoSuchElementException();
         Node<T> current = root;
@@ -260,7 +260,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
     }
 
     @NotNull
-    @Override
+//    @Override
     public Iterator<T> iterator() {
         if (first)
             return new BinarySearchTreeIteratorFirst();
@@ -287,10 +287,14 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         }
 
         private void pushLeftBranch(Node<T> cur) {
-            if (cur != null) {
+            while(cur!=null) {
                 stack.push(cur);
-                pushLeftBranch(cur.left);
+                cur = cur.left;
             }
+//            if (cur != null) {
+//                stack.push(cur);
+//                pushLeftBranch(cur.left);
+//            }
         }
 
         @Override
@@ -342,13 +346,21 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         }
 
         public Node<T> findSmallestNode(Node<T> root) {
-            if (root.left != null) return findSmallestNode(root.left);
-            else return root;
+            while(root.left != null) {
+                root = root.left;
+            }
+            return root;
+//            if (root.left != null) return findSmallestNode(root.left);
+//            else return root;
         }
 
         public Node<T> findNextSmallestParent(Node<T> node) {
-            if (node == node.parent.right) return findNextSmallestParent(node.parent);
-            else return node.parent;
+            while(node == node.parent.right) {
+                node = node.parent;
+            }
+            return node.parent;
+//            if (node == node.parent.right) return findNextSmallestParent(node.parent);
+//            else return node.parent;
         }
 
         @Override
